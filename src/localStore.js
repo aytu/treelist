@@ -21,7 +21,6 @@ const store = new LocalStore({
     key: 'id',   
     name: 'structures',
     immediate: true  
-
 });
 
 export default store;

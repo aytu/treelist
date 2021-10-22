@@ -8,7 +8,7 @@ import { useStore } from '../contexts/storeContext';
 
 export default function Structure() {
     const [isShow,setIsShow]=useState(false);
-    const store=useStore();
+    const { store }=useStore();
     const handleShowClick=()=>{
         setIsShow(prevState=>!prevState);
     }
