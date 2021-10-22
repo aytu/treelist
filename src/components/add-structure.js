@@ -72,7 +72,7 @@ export default function AddStructure() {
                 />
             </div>
           </div>
-          <div className="input-group">         
+          <div className="btn-group">         
             <Button width={60}
                   icon="icomoon icon-floppy-disk"
                   type="success"

@@ -62,7 +62,7 @@
 .icon-floppy-disk {
   &:hover{
     &:before {
-      content: $icon-bin; 
+      content: $icon-floppy-disk; 
       color: $icon-save-hover-color;
     }
   }

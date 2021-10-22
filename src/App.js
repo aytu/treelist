@@ -5,11 +5,13 @@ import Dashboard from './pages/dashboard';
 import Structure from './pages/structure';
 import './assets/scss/app.scss';
 import StoreProvider from './contexts/storeContext';
+import Header from './components/header';
 
 function App() {
   return (
     <BrowserRouter>
       <StoreProvider>
+        <Header/>
         <div className="app">
         <Switch>       
               <Route path="/" exact>

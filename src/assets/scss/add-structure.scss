@@ -10,4 +10,9 @@
       padding: 5px 0;
       width: 30%;
     }   
+    .btn-group{
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
 }

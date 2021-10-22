@@ -1,3 +1,19 @@
+@import './app-variables.scss';
+
 .app{
     padding: 10px 20px;
 }
+
+ .dx-treelist{
+     margin-top: 5px;
+ }
+.dx-row {
+    height: 24px;  
+  }
+.dx-header-row{
+    background-color: $header-color;
+    color: white;
+    .dx-header-filter{
+        color: white;
+    }
+  }  
