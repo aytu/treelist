@@ -2,14 +2,51 @@ import { Button } from 'devextreme-react';
 import { StateStoring } from 'devextreme-react/data-grid';
 import { TreeList, Column, Editing } from 'devextreme-react/tree-list';
 import DataSource from 'devextreme/data/data_source';
-import React from 'react'
+import React, { useRef } from 'react'
 import AddStructure from '../components/add-structure';
 import { IS_SHOW, useStore, useUpdateStore } from '../contexts/storeContext';
-
+import { CustomRule, PatternRule, StringLengthRule,ValidationRule,Lookup } from 'devextreme-react/tree-list';
+import  Query  from 'devextreme/data/query';
+import {   RequiredRule } from 'devextreme-react/validator';
 
 export default function Structure() {    
     const { store, isShow }=useStore();
     const updateStore=useUpdateStore();
+    const nodes=useRef([]);
+    const lookupData = {
+        store: store,
+        sort: 'name'
+      };  
+    const namePattern = /^[^0-9]+$/;
+    const nameUnique=({value})=>{             
+        const filteredData =  Query(store._array)
+            .filter(["name", "=", value])           
+            .toArray();                
+           return filteredData.length===0;         
+     }
+     function findChildren(node) {          
+        if (node.children) {  
+            node.children.forEach(function(item) {  
+              nodes.current.push(item);       
+              findChildren(item);  
+            })       
+        }  
+    } 
+     const onEditorPreparing = (e) => {
+        if(e.lookup){        
+            findChildren(e.row.node);           
+             const data=lookupData.store._array.filter(function(d) {
+                 return nodes.current.filter(c=>c.key===d.id).length===0
+             });     
+             e.editorOptions.dataSource=data;       
+            nodes.current=[];
+        }        
+         if (e.dataField === "parent_id" && e.row.data["parent_id"] === -1) {
+           e.editorOptions.disabled = true;
+           e.editorOptions.value = null;
+         }
+       }
+
     const handleShowClick=()=>{
         updateStore({type:IS_SHOW})
     }
@@ -30,17 +67,27 @@ export default function Structure() {
                         columnAutoWidth={true}
                         keyExpr="id"
                         parentIdExpr="parent_id"
+                        onEditorPreparing={onEditorPreparing}
                     >
                     <StateStoring enabled={true} type="localStorage" storageKey="structureStorage" />
                     <Editing
-                            mode="row"                           
+                            mode="form"                           
                             allowUpdating={true}
                             allowDeleting={true} />
                     <Column dataField="name"
                             dataType="string"
                             width="60%"
-                            caption="Name" />
-                            
+                            caption="Name">    
+                            <RequiredRule message="Name is required" />
+                            <PatternRule message="Do not use digits in the Name" pattern={namePattern} />
+                            <StringLengthRule message="Name must have at least 3 symbols" min={3} />
+                            <StringLengthRule message="Name must have maximum 30 symbols" max={30} />
+                            <CustomRule message="Name is already exists" validationCallback={nameUnique} />
+                    </Column>
+                    <Column visible={false} dataField="parent_id" caption="Parent_ID"  width="20%">
+                        <Lookup dataSource={lookupData} valueExpr="id" displayExpr="name" />
+                    <ValidationRule type="required" />
+                    </Column>       
                     <Column dataField="status"
                             dataType="boolean"
                             width="20%"
