@@ -5,7 +5,8 @@ import DataSource from 'devextreme/data/data_source';
 import React, { useRef } from 'react'
 import AddStructure from '../components/add-structure';
 import { IS_SHOW, useStore, useUpdateStore } from '../contexts/storeContext';
-import { CustomRule, PatternRule, StringLengthRule,ValidationRule,Lookup,Button as TreeButton } from 'devextreme-react/tree-list';
+import { CustomRule, PatternRule, StringLengthRule,ValidationRule,Lookup,Button as TreeButton,
+    HeaderFilter, Paging, Pager, Scrolling } from 'devextreme-react/tree-list';
 import  Query  from 'devextreme/data/query';
 import {   RequiredRule } from 'devextreme-react/validator';
 import '../assets/icomoon/style.scss';
@@ -75,6 +76,15 @@ export default function Structure() {
                         onEditorPreparing={onEditorPreparing}
                     >
                     <StateStoring enabled={true} type="localStorage" storageKey="structureStorage" />
+                    <HeaderFilter visible={true} />
+                    <Scrolling
+                        mode="standart" />
+                    <Paging
+                        enabled={true}
+                        defaultPageSize={5} />
+                    <Pager
+                        showInfo={true}
+                        infoText="Page #{0}. Total: {1} ({2} items)"/>
                     <Editing
                             mode="form"                           
                             allowUpdating={true}
