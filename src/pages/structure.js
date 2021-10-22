@@ -1,14 +1,20 @@
 import { Button } from 'devextreme-react';
 import { TreeList, Column, Editing } from 'devextreme-react/tree-list';
+import DataSource from 'devextreme/data/data_source';
 import React, { useState } from 'react'
 import AddStructure from '../components/add-structure';
-import { structures } from '../data'
+import { useStore } from '../contexts/storeContext';
+
 
 export default function Structure() {
     const [isShow,setIsShow]=useState(false);
+    const store=useStore();
     const handleShowClick=()=>{
         setIsShow(prevState=>!prevState);
     }
+    const dataSource=new DataSource({
+        store:store
+    });
     return (
         <> 
             <Button type="normal" stylingMode="outlined" text="Show" onClick={handleShowClick}/>
@@ -16,7 +22,7 @@ export default function Structure() {
             <div>
                 <TreeList
                         id="structures"
-                        dataSource={structures}
+                        dataSource={dataSource}
                         rootValue={-1}                  
                         showRowLines={true}
                         showBorders={true}

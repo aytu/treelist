@@ -1,3 +1,5 @@
+import LocalStore from 'devextreme/data/local_store';
+
 export const structures = [{
     'id': 1,
     'parent_id': -1,
@@ -14,3 +16,12 @@ export const structures = [{
     'name': 'Field3',
     'status': true
 }];
+
+const store = new LocalStore({
+    key: 'id',   
+    name: 'structures',
+    immediate: true  
+
+});
+
+export default store;
