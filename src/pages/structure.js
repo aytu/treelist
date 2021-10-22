@@ -5,9 +5,10 @@ import DataSource from 'devextreme/data/data_source';
 import React, { useRef } from 'react'
 import AddStructure from '../components/add-structure';
 import { IS_SHOW, useStore, useUpdateStore } from '../contexts/storeContext';
-import { CustomRule, PatternRule, StringLengthRule,ValidationRule,Lookup } from 'devextreme-react/tree-list';
+import { CustomRule, PatternRule, StringLengthRule,ValidationRule,Lookup,Button as TreeButton } from 'devextreme-react/tree-list';
 import  Query  from 'devextreme/data/query';
 import {   RequiredRule } from 'devextreme-react/validator';
+import '../assets/icomoon/style.scss';
 
 export default function Structure() {    
     const { store, isShow }=useStore();
@@ -55,7 +56,11 @@ export default function Structure() {
     });
     return (
         <> 
-            <Button type="normal" stylingMode="outlined" text="Show" onClick={handleShowClick}/>
+            <Button type="normal"
+                  stylingMode="outlined"
+                  icon="icomoon icon-plus"
+                  onClick={handleShowClick}/>
+
             {isShow ? <AddStructure/> : '' }
             <div>
                 <TreeList
@@ -92,6 +97,10 @@ export default function Structure() {
                             dataType="boolean"
                             width="20%"
                             caption="Status"/>
+                    <Column type="buttons">
+                           <TreeButton icon="iconmoon icon-pencil"  name="edit"/>                       
+                           <TreeButton icon="iconmoon icon-bin" name="delete"/>     
+                    </Column>
                 </TreeList>
             </div>
         </>

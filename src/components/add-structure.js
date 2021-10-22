@@ -72,9 +72,17 @@ export default function AddStructure() {
                 />
             </div>
           </div>
-          <div className="input-group">
-            <Button type="normal" stylingMode="outlined" text="Save" onClick={addStructure}/>
-            <Button type="normal" stylingMode="outlined" text="Cancel" />
+          <div className="input-group">         
+            <Button width={60}
+                  icon="icomoon icon-floppy-disk"
+                  type="success"
+                  stylingMode="outlined"
+                  onClick={addStructure}></Button>
+            <Button width={60}
+                  icon="icomoon icon-cross"
+                  type="success"
+                  stylingMode="outlined">                      
+             </Button>
           </div>
           <ValidationSummary id="summary"></ValidationSummary>
         </div>             
