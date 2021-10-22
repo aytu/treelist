@@ -13,7 +13,8 @@ function reducer(state,action){
         case ADD_STRUCTURE:
             state.store.insert(action.payload);
           return {store:store };
-           
+        case IS_SHOW:
+            return {...state,isShow:!state.isShow}           
         default:
           return state;
     }

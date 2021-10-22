@@ -1,16 +1,17 @@
 import { Button } from 'devextreme-react';
+import { StateStoring } from 'devextreme-react/data-grid';
 import { TreeList, Column, Editing } from 'devextreme-react/tree-list';
 import DataSource from 'devextreme/data/data_source';
-import React, { useState } from 'react'
+import React from 'react'
 import AddStructure from '../components/add-structure';
-import { useStore } from '../contexts/storeContext';
+import { IS_SHOW, useStore, useUpdateStore } from '../contexts/storeContext';
 
 
-export default function Structure() {
-    const [isShow,setIsShow]=useState(false);
-    const { store }=useStore();
+export default function Structure() {    
+    const { store, isShow }=useStore();
+    const updateStore=useUpdateStore();
     const handleShowClick=()=>{
-        setIsShow(prevState=>!prevState);
+        updateStore({type:IS_SHOW})
     }
     const dataSource=new DataSource({
         store:store
@@ -30,6 +31,7 @@ export default function Structure() {
                         keyExpr="id"
                         parentIdExpr="parent_id"
                     >
+                    <StateStoring enabled={true} type="localStorage" storageKey="structureStorage" />
                     <Editing
                             mode="row"                           
                             allowUpdating={true}

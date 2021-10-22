@@ -1,4 +1,6 @@
+
 import LocalStore from 'devextreme/data/local_store';
+import  Query  from 'devextreme/data/query';
 
 export const structures = [{
     'id': 1,
@@ -20,7 +22,19 @@ export const structures = [{
 const store = new LocalStore({
     key: 'id',   
     name: 'structures',
-    immediate: true  
+    immediate: true,
+    onInserting:function(values,key){
+        Query(store._array)
+        .select("id")
+        .max("id")
+        .then(result=>{
+            if(store._array.length===0){
+                values.id=1;
+            }else{
+                values.id=result+1;
+            }
+        })
+    }
 });
 
 export default store;
