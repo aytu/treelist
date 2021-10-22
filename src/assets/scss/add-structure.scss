@@ -1,0 +1,13 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px 5px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    .input-group{
+      padding: 5px 0;
+      width: 30%;
+    }   
+}
