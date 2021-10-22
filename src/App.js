@@ -1,13 +1,22 @@
 import React from 'react';
 import 'devextreme/dist/css/dx.light.css';
-import { Button } from 'devextreme-react';
-
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import Dashboard from './pages/dashboard';
+import Structure from './pages/structure';
 
 function App() {
   return (
-    <div>
-         <Button  type="success" stylingMode="outlined" >Devextreme Button</Button>
-    </div>
+    <BrowserRouter>
+      <Switch>
+          <Route path="/" exact>
+                  <Dashboard/>
+            </Route>
+            <Route path="/structure" exact>
+                  <Structure/>
+            </Route>
+      </Switch>        
+    </BrowserRouter>
+       
   );
 }
 
