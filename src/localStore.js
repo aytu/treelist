@@ -18,11 +18,31 @@ export const structures = [{
     'name': 'Field3',
     'status': true
 }];
+let removedChildrenIds=[];
+function findChildren(key){
+    const children= Query(store._array)
+    .filter(x=>x.parent_id===key)      
+    .toArray();  
+    children.forEach(c=>{
+           removedChildrenIds.push(c);         
+    })
+
+}
 
 const store = new LocalStore({
     key: 'id',   
     name: 'structures',
     immediate: true,
+    onUpdating:function(key,values){      
+        if(values["parent_id"]==key){           
+            values["parent_id"]=-1;
+        }
+    },
+    onRemoved:function(key){
+        findChildren(key);
+        removedChildrenIds.forEach(x=>store.remove(x.id));
+        removedChildrenIds=[];        
+    },    
     onInserting:function(values,key){
         Query(store._array)
         .select("id")

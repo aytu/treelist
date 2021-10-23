@@ -2,7 +2,7 @@ import { Button, SelectBox, Switch, TextBox } from 'devextreme-react'
 import DataSource from 'devextreme/data/data_source';
 import React, { useState } from 'react'
 import '../assets/scss/add-structure.scss';
-import { ADD_STRUCTURE, useStore, useUpdateStore } from '../contexts/storeContext';
+import { ADD_STRUCTURE, IS_SHOW, useStore, useUpdateStore } from '../contexts/storeContext';
 import ValidationGroup from 'devextreme-react/validation-group';
 import { CustomRule, PatternRule, StringLengthRule } from 'devextreme-react/tree-list';
 import ValidationSummary from 'devextreme-react/validation-summary';
@@ -31,6 +31,11 @@ export default function AddStructure() {
     }
     const switchValueChanged=(data)=>{       
         setStructure({...structure, status :data.value})
+    }
+
+    const cancelStricture=()=>{
+        setStructure({parent_id:-1});
+        updateStore({type: IS_SHOW}); 
     }
     const addStructure=(e)=>{     
         let result = e.validationGroup.validate();
@@ -81,7 +86,8 @@ export default function AddStructure() {
             <Button width={60}
                   icon="icomoon icon-cross"
                   type="success"
-                  stylingMode="outlined">                      
+                  stylingMode="outlined"
+                  onClick={cancelStricture}>                      
              </Button>
           </div>
           <ValidationSummary id="summary"></ValidationSummary>

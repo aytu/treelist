@@ -6,7 +6,7 @@ import React, { useRef } from 'react'
 import AddStructure from '../components/add-structure';
 import { IS_SHOW, useStore, useUpdateStore } from '../contexts/storeContext';
 import { CustomRule, PatternRule, StringLengthRule,ValidationRule,Lookup,Button as TreeButton,
-    HeaderFilter, Paging, Pager, Scrolling } from 'devextreme-react/tree-list';
+    HeaderFilter, Paging, Pager, Scrolling,SearchPanel } from 'devextreme-react/tree-list';
 import  Query  from 'devextreme/data/query';
 import {   RequiredRule } from 'devextreme-react/validator';
 import '../assets/icomoon/style.scss';
@@ -19,12 +19,15 @@ export default function Structure() {
         store: store,
         sort: 'name'
       };  
+    const allowedPageSizes = [5, 10, 20];
     const namePattern = /^[^0-9]+$/;
-    const nameUnique=({value})=>{             
+    const nameUnique=(p)=>{          
+        console.log(p)   
         const filteredData =  Query(store._array)
-            .filter(["name", "=", value])           
-            .toArray();                
-           return filteredData.length===0;         
+            .filter(s=>s.id!==p.data.id)
+            .filter(["name", "=", p.value])                
+            .toArray();   
+          return filteredData.length===0;         
      }
      function findChildren(node) {          
         if (node.children) {  
@@ -43,10 +46,10 @@ export default function Structure() {
              e.editorOptions.dataSource=data;       
             nodes.current=[];
         }        
-         if (e.dataField === "parent_id" && e.row.data["parent_id"] === -1) {
-           e.editorOptions.disabled = true;
-           e.editorOptions.value = null;
-         }
+        //  if (e.dataField === "parent_id" && e.row.data["parent_id"] === -1) {
+        //    e.editorOptions.disabled = true;
+        //    e.editorOptions.value = null;
+        //  }
        }
 
     const handleShowClick=()=>{
@@ -76,15 +79,26 @@ export default function Structure() {
                         onEditorPreparing={onEditorPreparing}
                     >
                     <StateStoring enabled={true} type="localStorage" storageKey="structureStorage" />
+                    <SearchPanel visible={true} />
                     <HeaderFilter visible={true} />
                     <Scrolling
+                        mode="all" />
+                        <Paging
+                        enabled={true}
+                        //defaultPageSize={5} 
+                        />
+                        <Pager
+                        showPageSizeSelector={true}
+                        showInfo={true}
+                        infoText="Page #{0}. Total: {1} ({2} items)"/>
+                    {/* <Scrolling
                         mode="standart" />
                     <Paging
                         enabled={true}
                         defaultPageSize={5} />
                     <Pager
                         showInfo={true}
-                        infoText="Page #{0}. Total: {1} ({2} items)"/>
+                        infoText="Page #{0}. Total: {1} ({2} items)"/> */}
                     <Editing
                             mode="form"                           
                             allowUpdating={true}
@@ -101,7 +115,7 @@ export default function Structure() {
                     </Column>
                     <Column visible={false} dataField="parent_id" caption="Parent_ID"  width="20%">
                         <Lookup dataSource={lookupData} valueExpr="id" displayExpr="name" />
-                    <ValidationRule type="required" />
+                    {/* <ValidationRule type="required" /> */}
                     </Column>       
                     <Column dataField="status"
                             dataType="boolean"
