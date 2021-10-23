@@ -34,7 +34,7 @@ const store = new LocalStore({
     name: 'structures',
     immediate: true,
     onUpdating:function(key,values){      
-        if(values["parent_id"]==key){           
+        if(values["parent_id"]===key){           
             values["parent_id"]=-1;
         }
     },

@@ -83,6 +83,9 @@ export default function AddStructure() {
                   type="success"
                   stylingMode="outlined"
                   onClick={addStructure}></Button>
+           
+          </div>    
+          <div  className="btn-group">
             <Button width={60}
                   icon="icomoon icon-cross"
                   type="success"

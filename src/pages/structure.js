@@ -1,18 +1,18 @@
 import { Button } from 'devextreme-react';
-import { StateStoring } from 'devextreme-react/data-grid';
+// import { StateStoring } from 'devextreme-react/data-grid';
 import { TreeList, Column, Editing } from 'devextreme-react/tree-list';
 import DataSource from 'devextreme/data/data_source';
 import React, { useRef } from 'react'
 import AddStructure from '../components/add-structure';
 import { IS_SHOW, useStore, useUpdateStore } from '../contexts/storeContext';
-import { CustomRule, PatternRule, StringLengthRule,ValidationRule,Lookup,Button as TreeButton,
+import { CustomRule, PatternRule, StringLengthRule,Lookup,Button as TreeButton,
     HeaderFilter, Paging, Pager, Scrolling,SearchPanel } from 'devextreme-react/tree-list';
 import  Query  from 'devextreme/data/query';
 import {   RequiredRule } from 'devextreme-react/validator';
 import '../assets/icomoon/style.scss';
 
 export default function Structure() {    
-    const { store, isShow }=useStore();
+    const { store, isShow }=useStore();  
     const updateStore=useUpdateStore();
     const nodes=useRef([]);
     const lookupData = {
@@ -46,10 +46,9 @@ export default function Structure() {
              e.editorOptions.dataSource=data;       
             nodes.current=[];
         }        
-        //  if (e.dataField === "parent_id" && e.row.data["parent_id"] === -1) {
-        //    e.editorOptions.disabled = true;
-        //    e.editorOptions.value = null;
-        //  }
+         if (e.dataField === "parent_id" && e.row.data["parent_id"] === -1) {        
+           e.editorOptions.value = e.row.data["id"];
+         }
        }
 
     const handleShowClick=()=>{
@@ -58,6 +57,7 @@ export default function Structure() {
     const dataSource=new DataSource({
         store:store
     });
+
     return (
         <> 
             <Button type="normal"
@@ -73,32 +73,24 @@ export default function Structure() {
                         rootValue={-1}                  
                         showRowLines={true}
                         showBorders={true}
+                        autoExpandAll={true}
                         columnAutoWidth={true}
                         keyExpr="id"
                         parentIdExpr="parent_id"
-                        onEditorPreparing={onEditorPreparing}
+                        onEditorPreparing={onEditorPreparing}                     
                     >
-                    <StateStoring enabled={true} type="localStorage" storageKey="structureStorage" />
+                    {/* <StateStoring enabled={true} type="localStorage" storageKey="structureStorage" /> */}
                     <SearchPanel visible={true} />
                     <HeaderFilter visible={true} />
                     <Scrolling
-                        mode="all" />
+                        mode="standard" />
                         <Paging
                         enabled={true}
-                        //defaultPageSize={5} 
-                        />
-                        <Pager
-                        showPageSizeSelector={true}
-                        showInfo={true}
-                        infoText="Page #{0}. Total: {1} ({2} items)"/>
-                    {/* <Scrolling
-                        mode="standart" />
-                    <Paging
-                        enabled={true}
-                        defaultPageSize={5} />
-                    <Pager
-                        showInfo={true}
-                        infoText="Page #{0}. Total: {1} ({2} items)"/> */}
+                        defaultPageSize={10} />
+                        <Pager                       
+                        showPageSizeSelector={false}
+                        allowedPageSizes={allowedPageSizes}
+                        showInfo={true} />
                     <Editing
                             mode="form"                           
                             allowUpdating={true}
@@ -114,8 +106,7 @@ export default function Structure() {
                             <CustomRule message="Name is already exists" validationCallback={nameUnique} />
                     </Column>
                     <Column visible={false} dataField="parent_id" caption="Parent_ID"  width="20%">
-                        <Lookup dataSource={lookupData} valueExpr="id" displayExpr="name" />
-                    {/* <ValidationRule type="required" /> */}
+                        <Lookup dataSource={lookupData} valueExpr="id" displayExpr="name" />                   
                     </Column>       
                     <Column dataField="status"
                             dataType="boolean"
